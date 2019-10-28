@@ -9,10 +9,22 @@ export default function DayListItem(props) {
     "day-list__item--full": props.spots === 0
   });
 
+  const message = {
+    none: "no spots remaining",
+    one: `${props.spots} spot remaining`,
+    more: `${props.spots} spots remaining`
+  };
+
   return (
     <li className={dayClass} onClick={() => props.setDay(props.name)}>
       <h2 className="text--regular">{props.name}</h2>
-      <h3 className="text--light">{props.spots}</h3>
+      <h3 className="text--light">
+        {props.spots
+          ? props.spots === 1
+            ? message.one
+            : message.more
+          : message.none}
+      </h3>
     </li>
   );
 }
