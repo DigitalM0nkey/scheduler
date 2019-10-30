@@ -12,11 +12,10 @@ export default function InterviewerList(props) {
             key={interviewer.id}
             name={interviewer.name}
             avatar={interviewer.avatar}
-            selected={props.interviewer === interviewer.id}
-            setInterviewer={() => props.setInterviewer(interviewer.id)}
+            selected={props.value === interviewer.id}
+            setInterviewer={() => props.onChange(interviewer.id)}
           />
         ))}
-        ;
       </ul>
     </section>
   );
