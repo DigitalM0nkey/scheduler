@@ -1,4 +1,4 @@
-export default function getAppointmentsForDay(state, day) {
+export function getAppointmentsForDay(state, day) {
   let index = state.days.findIndex(x => x.name === day);
   let appointmentKeys = [];
   let appointments = [];
@@ -15,4 +15,18 @@ export default function getAppointmentsForDay(state, day) {
   });
 
   return appointments;
+}
+
+export function getInterview(state, interview) {
+  let index;
+  if (interview) {
+    index = interview.interviewer;
+  } else {
+    return null;
+  }
+  let interviewerData = {
+    student: interview.student,
+    interviewer: state.interviewers[index]
+  };
+  return interviewerData;
 }

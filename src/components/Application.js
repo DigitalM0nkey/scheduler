@@ -4,29 +4,26 @@ import axios from "axios";
 import "components/Application.scss";
 import DayList from "./DayList";
 import Appointment from "components/Appointment";
-import getAppointmentsForDay from "../helpers/selectors";
+import { getAppointmentsForDay } from "../helpers/selectors";
 
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
   useEffect(() => {
     Promise.all([
       axios.get(`http://localhost:8001/api/days`),
-      // .then(response => {
-      //   return setState(prev => ({ ...prev, days: response.data }));
-      // }),
-      axios.get(`http://localhost:8001/api/appointments`)
-      // .then(response => {
-      //   return setState(prev => ({ ...prev, appointments: response.data }));
-      // })
+      axios.get(`http://localhost:8001/api/appointments`),
+      axios.get(`http://localhost:8001/api/interviewers`)
     ]).then(all => {
       setState(prev => ({
         ...prev,
         days: all[0].data,
-        appointments: all[1].data
+        appointments: all[1].data,
+        interviewers: all[2].data
       }));
       console.log(all);
     });
@@ -40,7 +37,14 @@ export default function Application(props) {
 
   const scheduledAppointments = getAppointmentsForDay(state, state.day).map(
     appointment => {
-      return <Appointment key={appointment.id} {...appointment} />;
+      return (
+        <Appointment
+          key={appointment.id}
+          id={appointment.id}
+          time={appointment.time}
+          interview={interview} /*{...appointment}*/
+        />
+      );
     }
   );
 
