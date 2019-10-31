@@ -1,4 +1,4 @@
-export function getAppointmentsForDay(state, day) {
+export default function getAppointmentsForDay(state, day) {
   let index = state.days.findIndex(x => x.name === day);
   let appointmentKeys = [];
   let appointments = [];
