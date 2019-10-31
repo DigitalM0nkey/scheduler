@@ -58,14 +58,31 @@ export default function Application(props) {
     days: [],
     appointments: {}
   });
-  console.log("STATE", state);
-
   useEffect(() => {
-    axios.get(`http://localhost:8001/api/days`).then(response => {
-      console.log("RESPONSE DATA", response.data);
-      setState(prev => ({ ...prev, days: response.data }));
+    Promise.all([
+      axios.get(`http://localhost:8001/api/days`),
+      // .then(response => {
+      //   return setState(prev => ({ ...prev, days: response.data }));
+      // }),
+      axios.get(`http://localhost:8001/api/appointments`)
+      // .then(response => {
+      //   return setState(prev => ({ ...prev, appointments: response.data }));
+      // })
+    ]).then(all => {
+      setState(prev => ({
+        ...prev,
+        days: all[0].data,
+        appointments: all[1].data
+      }));
+      console.log(all);
     });
   }, []);
+
+  // axios.get(`http://localhost:8001/api/days`).then(response => {
+  //   setState(prev => ({ ...prev, days: response.data }));
+  // }),
+
+  const setDay = day => setState(prev => ({ ...prev, day }));
 
   const scheduledAppointments = appointments.map(appointment => {
     return <Appointment key={appointment.id} {...appointment} />;
@@ -81,7 +98,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList days={state.days} day={state.day} setDay={state.setDay} />
+          <DayList days={state.days} day={state.day} setDay={setDay} />
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
