@@ -33,9 +33,9 @@ export default function Application(props) {
     });
   }, []);
 
-  // axios.get(`http://localhost:8001/api/days`).then(response => {
-  //   setState(prev => ({ ...prev, days: response.data }));
-  // }),
+  const bookInterview = (id, interview) => {
+    console.log("ID", id, "INTERVIEW", interview);
+  };
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
@@ -49,6 +49,7 @@ export default function Application(props) {
           time={appointment.time}
           interview={getInterview(state, appointment.interview)}
           interviewers={getInterviewersForDay(state, state.day)}
+          bookInterview={bookInterview}
         />
       );
     }
