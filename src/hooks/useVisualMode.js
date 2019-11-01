@@ -16,6 +16,9 @@ export default function useVisualMode(initial) {
     let historyMinusTwo = history.length - 2;
     if (historyMinusTwo >= 0) {
       setMode(history[historyMinusTwo]);
+      let newHistory = [...history];
+      newHistory.pop();
+      setHistory(newHistory);
     }
   }
   return [mode, transition, back];
