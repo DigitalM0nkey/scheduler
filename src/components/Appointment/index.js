@@ -22,7 +22,7 @@ const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   const initialVisualMode = props.interview ? SHOW : EMPTY;
-  const [visualMode, transition, back] = useVisualMode(initialVisualMode);
+  const { visualMode, transition, back } = useVisualMode(initialVisualMode);
   console.log("INTERVIEWERS", props.interviewers);
 
   function save(name, interviewer) {
@@ -30,7 +30,7 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    transition(SAVING);
+    transition(SAVING, true);
     props
       .bookInterview(props.id, interview)
       .then(() => transition(SHOW))
@@ -42,12 +42,12 @@ export default function Appointment(props) {
 
   function destroy() {
     console.log("ALL GONE");
-    transition(DELETE);
+    transition(DELETE, true);
     props
       .cancelInterview(props.id)
       .then(() => transition(EMPTY))
       .catch(error => {
-        console.log(error);
+        console.log("ERROR DESTROY", error);
         transition(ERROR_DELETE, true);
       });
   }
@@ -89,6 +89,12 @@ export default function Appointment(props) {
             onCancel={back}
             onSave={save}
           />
+        )}
+        {visualMode === ERROR_DELETE && (
+          <Error message="Could not cancel" onClose={() => transition(SHOW)} />
+        )}
+        {visualMode === ERROR_SAVE && (
+          <Error message="Could not save" onClose={() => transition(EMPTY)} />
         )}
       </header>
     </article>
