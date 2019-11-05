@@ -63,7 +63,6 @@ export default function useApplicationData(props) {
         type: SET_APPLICATION_DATA,
         value: all
       });
-      console.log(all);
     });
   }, []);
 
