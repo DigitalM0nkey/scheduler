@@ -39,6 +39,21 @@ export default function Appointment(props) {
       });
   }
 
+  function update(name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer
+    };
+    transition(SAVING, true);
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => {
+        console.log(error);
+        transition(ERROR_SAVE, true);
+      });
+  }
+
   function destroy() {
     console.log("ALL GONE");
     transition(DELETE, true);
@@ -86,7 +101,7 @@ export default function Appointment(props) {
             interviewers={props.interviewers}
             interviewer={props.interview.interviewer.id}
             onCancel={back}
-            onSave={save}
+            onSave={update}
           />
         )}
         {mode === ERROR_DELETE && (
