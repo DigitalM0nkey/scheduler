@@ -68,7 +68,6 @@ export default function useApplicationData(props) {
 
   const bookInterview = (id, interview) => {
     const isUpdate = state.appointments[id];
-    debugger;
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
