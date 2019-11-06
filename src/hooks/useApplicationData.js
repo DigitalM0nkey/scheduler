@@ -67,6 +67,8 @@ export default function useApplicationData(props) {
   }, []);
 
   const bookInterview = (id, interview) => {
+    const isUpdate = state.appointments[id];
+    debugger;
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -78,7 +80,11 @@ export default function useApplicationData(props) {
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then(() => dispatch({ type: SET_INTERVIEW, value: appointments }))
-      .then(() => dispatch({ type: SET_SPOTS, value: id, func: true }));
+      .then(() => {
+        if (!isUpdate) {
+          dispatch({ type: SET_SPOTS, value: id, func: true });
+        }
+      });
   };
 
   const cancelInterview = id => {
