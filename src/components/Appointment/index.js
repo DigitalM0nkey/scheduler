@@ -22,7 +22,7 @@ const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   const initialVisualMode = props.interview ? SHOW : EMPTY;
-  const { visualMode, transition, back } = useVisualMode(initialVisualMode);
+  const { mode, transition, back } = useVisualMode(initialVisualMode);
 
   function save(name, interviewer) {
     const interview = {
@@ -52,11 +52,11 @@ export default function Appointment(props) {
   }
 
   return (
-    <article className="appointment">
+    <article data-testid="appointment" className="appointment">
       <header>
         <Header time={props.time} />
-        {visualMode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
-        {visualMode === SHOW && (
+        {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
+        {mode === SHOW && (
           <Show
             onEdit={() => transition(EDIT)}
             onDelete={() => transition(CONFIRM)}
@@ -64,23 +64,23 @@ export default function Appointment(props) {
             interviewer={props.interview.interviewer}
           />
         )}
-        {visualMode === CREATE && (
+        {mode === CREATE && (
           <Form
             interviewers={props.interviewers}
             onCancel={back}
             onSave={save}
           />
         )}
-        {visualMode === SAVING && <Status message="Saving....." />}
-        {visualMode === DELETE && <Status message="Deleting..." />}
-        {visualMode === CONFIRM && (
+        {mode === SAVING && <Status message="Saving....." />}
+        {mode === DELETE && <Status message="Deleting..." />}
+        {mode === CONFIRM && (
           <Confirm
             onConfirm={destroy}
             message="Are you sure?"
             onCancel={() => transition(SHOW)}
           />
         )}
-        {visualMode === EDIT && (
+        {mode === EDIT && (
           <Form
             name={props.interview.student}
             interviewers={props.interviewers}
@@ -89,10 +89,10 @@ export default function Appointment(props) {
             onSave={save}
           />
         )}
-        {visualMode === ERROR_DELETE && (
+        {mode === ERROR_DELETE && (
           <Error message="Could not cancel" onClose={() => transition(SHOW)} />
         )}
-        {visualMode === ERROR_SAVE && (
+        {mode === ERROR_SAVE && (
           <Error message="Could not save" onClose={() => transition(EMPTY)} />
         )}
       </header>
